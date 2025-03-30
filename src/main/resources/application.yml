@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: authorization
+
+  datasource:
+    url: jdbc:postgresql://104.248.62.255:5432/bd_principal
+    username: admin
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: acme_airlines
+server:
+  port: 9000
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
