@@ -16,7 +16,7 @@
 	<repositories>
 		<repository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/acme-airlines/commons</url>
+			<url>https://maven.pkg.github.com/acme-airlines/acme-airlines-commons</url>
 		</repository>
 	</repositories>
 	<properties>
