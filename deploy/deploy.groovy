@@ -40,12 +40,7 @@ pipeline {
           <settings>
             <servers>
               <server>
-                <id>github-commons</id>
-                <username>${GITHUB_USERNAME}</username>
-                <password>${GITHUB_TOKEN}</password>
-              </server>
-              <server>
-                <id>github-seguridad</id>
+                <id>github</id>
                 <username>${GITHUB_USERNAME}</username>
                 <password>${GITHUB_TOKEN}</password>
               </server>

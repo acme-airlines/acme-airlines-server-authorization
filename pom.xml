@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>co.edu.uni.acme.aerolinea</groupId>
 			<artifactId>commons</artifactId>
-			<version>0.0.7</version>
+			<version>3.4.19</version>
 		</dependency>
 	</dependencies>
 
