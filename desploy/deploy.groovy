@@ -16,7 +16,7 @@ pipeline {
     DOCKER_IMAGE    = "mariafernanda2798/acme-airlines-authorization:latest"
     
     // Parámetros para DigitalOcean Kubernetes
-    DO_K8S_DEPLOYMENT = "acme-airlines-authorization-deployment"
+    DO_K8S_DEPLOYMENT = "ms-acme-airlines-authorization"
     DO_K8S_NAMESPACE  = "default" // Ajusta si usas otro namespace
   }
   
