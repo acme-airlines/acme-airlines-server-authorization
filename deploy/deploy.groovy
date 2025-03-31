@@ -10,7 +10,7 @@ pipeline {
     GITHUB_TOKEN    = credentials('github-token')
     GITHUB_USERNAME = credentials('github-username')
     // Repositorio en formato "owner/repo" sin URL ni extensión .git
-    GITHUB_REPO     = "acme-airlines/acme-airlines-commons"
+    GITHUB_REPO     = "acme-airlines/acme-airlines-server-authorization"
     
     // Parámetros para Docker
     DOCKER_IMAGE    = "mariafernanda2798/acme-airlines-authorization:latest"
