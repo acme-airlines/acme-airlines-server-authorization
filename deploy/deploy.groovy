@@ -14,7 +14,9 @@ pipeline {
     
     // Parámetros para Docker
     DOCKER_IMAGE    = "mariafernanda2798/acme-airlines-authorization:latest"
-    
+
+    DOCKER_USERNAME = credentials('DOCKER_USERNAME')
+    DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
     // Parámetros para DigitalOcean Kubernetes
     DO_K8S_DEPLOYMENT = "ms-acme-airlines-authorization"
     DO_K8S_NAMESPACE  = "default" // Ajusta si usas otro namespace
@@ -63,7 +65,7 @@ EOF
         withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
           sh '''
             echo "Logging into Docker Hub..."
-            docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+            docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
             echo "Building Docker image..."
             docker build -t ${DOCKER_IMAGE} .
             echo "Pushing Docker image..."
