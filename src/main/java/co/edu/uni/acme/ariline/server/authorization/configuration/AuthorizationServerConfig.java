@@ -181,7 +181,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
                 .redirectUri("http://104.248.62.255:8081/login/oauth2/code/oauth-client")
-                .redirectUri("http://104.248.62.255:8081/authorized")
+                .redirectUri("http://104.248.62.255:8081/api/v1/public/auth/authorized")
                 .postLogoutRedirectUri("http://104.248.62.255:8081/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
