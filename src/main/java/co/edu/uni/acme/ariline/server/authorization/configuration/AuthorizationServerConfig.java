@@ -1,15 +1,12 @@
 package co.edu.uni.acme.ariline.server.authorization.configuration;
 
-import co.edu.uni.acme.aerolinea.commons.entity.PassengerEntity;
-import co.edu.uni.acme.ariline.server.authorization.repository.PassengerRepository;
-import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationFilterService;
-import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationProviderService;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
-import lombok.RequiredArgsConstructor;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -46,12 +43,17 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
-import java.util.UUID;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
+
+import co.edu.uni.acme.aerolinea.commons.entity.PassengerEntity;
+import co.edu.uni.acme.ariline.server.authorization.repository.PassengerRepository;
+import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationFilterService;
+import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationProviderService;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Configuration class for the OAuth2 Authorization Server.
@@ -178,9 +180,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/oauth-client")
-                .redirectUri("http://127.0.0.1:8080/authorized")
-                .postLogoutRedirectUri("http://127.0.0.1:8080/logout")
+                .redirectUri("http://127.0.0.1:8081/login/oauth2/code/oauth-client")
+                .redirectUri("http://127.0.0.1:8081/authorized")
+                .postLogoutRedirectUri("http://127.0.0.1:8081/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
