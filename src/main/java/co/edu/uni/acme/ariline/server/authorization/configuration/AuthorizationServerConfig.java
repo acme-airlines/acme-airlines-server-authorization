@@ -2,6 +2,7 @@ package co.edu.uni.acme.ariline.server.authorization.configuration;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
@@ -28,6 +29,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -36,7 +38,9 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -67,6 +71,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
+
     /**
      * Configures the security filter chain for the authorization server endpoints.
      * <p>
@@ -90,13 +95,14 @@ public class AuthorizationServerConfig {
                                                                       UserDetailsService userDetailsService,
                                                                       PasswordEncoder passwordEncoder,
                                                                       OAuth2TokenGenerator<? extends OAuth2AccessToken> tokenGenerator,
-                                                                      AuthenticationManager authenticationManager) throws Exception {
+                                                                      AuthenticationManager authenticationManager,
+                                                                      AuthorizationServerSettings authorizationServerSettings) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 OAuth2AuthorizationServerConfigurer.authorizationServer();
 
         // Configure the authentication provider for the 'password' grant
         PasswordGrantAuthenticationProviderService passwordGrantProvider =
-                new PasswordGrantAuthenticationProviderService(userDetailsService, passwordEncoder, tokenGenerator);
+                new PasswordGrantAuthenticationProviderService(userDetailsService, passwordEncoder, tokenGenerator, authorizationServerSettings);
         http.authenticationProvider(passwordGrantProvider);
 
         // Define the custom password grant authentication filter and ensure it has the AuthenticationManager
@@ -117,6 +123,7 @@ public class AuthorizationServerConfig {
 
         return http.build();
     }
+
 
     /**
      * Configures the default security filter chain for non-authorization server endpoints.
@@ -180,9 +187,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
-                .redirectUri("http://104.248.62.255:8081/login/oauth2/code/oauth-client")
-                .redirectUri("http://104.248.62.255:8081/api/v1/public/auth/authorized")
-                .postLogoutRedirectUri("http://104.248.62.255:8081/logout")
+                .redirectUri("http://127.0.0.1:8081/login/oauth2/code/oauth-client")
+                .redirectUri("http://127.0.0.1:8081/api/v1/public/auth/authorized")
+                .postLogoutRedirectUri("http://127.0.0.1:8081/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
@@ -254,7 +261,9 @@ public class AuthorizationServerConfig {
      */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+                .issuer("http://127.0.0.1:9000")
+                .build();
     }
 
     /**
@@ -267,8 +276,11 @@ public class AuthorizationServerConfig {
      * @return an OAuth2TokenGenerator instance
      */
     @Bean
-    public OAuth2TokenGenerator<?> tokenGenerator(JwtEncoder jwtEncoder) {
-        return new JwtGenerator(jwtEncoder);
+    public OAuth2TokenGenerator<?> tokenGenerator(JwtEncoder jwtEncoder,
+                                                  OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer) {
+        JwtGenerator jwtGenerator = new JwtGenerator(jwtEncoder);
+        jwtGenerator.setJwtCustomizer(jwtCustomizer);
+        return jwtGenerator;
     }
 
     /**
@@ -320,4 +332,18 @@ public class AuthorizationServerConfig {
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
+
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(AuthorizationServerSettings authorizationServerSettings) {
+        return context -> {
+            // Solo personalizamos el token de acceso (access token)
+            System.out.println("init");
+            if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+                String issuer = authorizationServerSettings.getIssuer();
+                context.getClaims().issuer(authorizationServerSettings.getIssuer());
+                System.out.println("JWT Customizer: Agregando issuer " + issuer);
+            }
+        };
+    }
+
 }

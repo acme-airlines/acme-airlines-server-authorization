@@ -1,5 +1,6 @@
 package co.edu.uni.acme.ariline.server.authorization.service;
 
+import co.edu.uni.acme.ariline.server.authorization.dto.DefaultAuthorizationServerContextDto;
 import co.edu.uni.acme.ariline.server.authorization.dto.OAuth2ClientAuthenticationTokenDto;
 import co.edu.uni.acme.ariline.server.authorization.dto.PasswordGrantAuthenticationTokenDto;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContext;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
@@ -40,6 +43,7 @@ public class PasswordGrantAuthenticationProviderService implements Authenticatio
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final OAuth2TokenGenerator<? extends OAuth2AccessToken> tokenGenerator;
+    private final AuthorizationServerSettings authorizationServerSettings; // Inyectado
 
     /**
      * Authenticates the password grant request.
@@ -79,6 +83,9 @@ public class PasswordGrantAuthenticationProviderService implements Authenticatio
                 .authorizationGrantType(new AuthorizationGrantType("password"))
                 .authorizedScopes(scopes)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
+                .authorizationServerContext(new DefaultAuthorizationServerContextDto(
+                        authorizationServerSettings.getIssuer(),
+                        authorizationServerSettings))
                 .build();
 
         // Generate the token (a Jwt is expected since JwtGenerator is used)
