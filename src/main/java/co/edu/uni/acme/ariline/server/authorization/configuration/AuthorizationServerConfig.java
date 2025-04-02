@@ -187,9 +187,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
-                .redirectUri("http://127.0.0.1:8081/login/oauth2/code/oauth-client")
-                .redirectUri("http://127.0.0.1:8081/api/v1/public/auth/authorized")
-                .postLogoutRedirectUri("http://127.0.0.1:8081/logout")
+                .redirectUri("http://104.248.62.255:8081/login/oauth2/code/oauth-client")
+                .redirectUri("http://104.248.62.255:8081/api/v1/public/auth/authorized")
+                .postLogoutRedirectUri("http://104.248.62.255:8081/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
@@ -262,7 +262,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("http://127.0.0.1:9000")
+                .issuer("http://104.248.62.255:9000")
                 .build();
     }
 
