@@ -3,9 +3,9 @@ spring:
     name: authorization
 
   datasource:
-    url: jdbc:postgresql://104.248.62.255:5432/bd_principal
+    url: jdbc:postgresql://137.184.136.186:5432/bd_principal
     username: admin
-    password: 12345
+    password: 16042004Bb#$19
     driver-class-name: org.postgresql.Driver
 
   jpa:
