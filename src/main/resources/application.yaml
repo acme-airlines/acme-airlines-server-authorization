@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://137.184.136.186:5432/bd_principal
     username: admin
-    password: 16042004Bb#$19
+    password: "16042004Bb#$19"
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -16,8 +16,10 @@ spring:
     properties:
       hibernate:
         default_schema: acme_airlines
+
 server:
   port: 9000
+
 logging:
   level:
     org:
