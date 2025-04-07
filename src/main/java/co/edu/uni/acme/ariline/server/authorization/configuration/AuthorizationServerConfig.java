@@ -262,7 +262,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("http://137.184.136.186:9000")
+                .issuer("https://ms-apis.146.190.199.15.nip.io/authorization")
                 .build();
     }
 
