@@ -187,9 +187,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
-                .redirectUri("http://137.184.136.186:8081/login/oauth2/code/oauth-client")
-                .redirectUri("http://137.184.136.186:8081/api/v1/public/auth/authorized")
-                .postLogoutRedirectUri("http://137.184.136.186:8081/logout")
+                .redirectUri("https://front.146.190.199.15.nip.io/oauth/oauth2/code/oauth-client")
+                .redirectUri("https://front.146.190.199.15.nip.io/oauth/v1/public/auth/authorized")
+                .postLogoutRedirectUri("https://front.146.190.199.15.nip.io/oauth/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
@@ -262,7 +262,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("https://ms-apis.146.190.199.15.nip.io/authorization")
+                .issuer("https://front.146.190.199.15.nip.io/authorization")
                 .build();
     }
 
