@@ -139,7 +139,9 @@ public class AuthorizationServerConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/authorization/**").permitAll()
+                        .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .formLogin(Customizer.withDefaults());
         return http.build();
