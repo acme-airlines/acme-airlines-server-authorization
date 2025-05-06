@@ -17,16 +17,6 @@ public class AuthorizationApplication {
 	@Autowired
 	private Environment environment;
 
-	@PostConstruct
-	public void checkConfig() {
-		System.out.println("DB URL: " + environment.getProperty("spring.datasource.url"));
-		System.out.println("DB USER: " + environment.getProperty("spring.datasource.username"));
-		System.out.println("DB PASS: " + environment.getProperty("spring.datasource.password"));
-		System.out.println("Active profiles: " + Arrays.toString(environment.getActiveProfiles()));
-	}
-
-
-
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(AuthorizationApplication.class)
 				.properties("spring.config.name=application")

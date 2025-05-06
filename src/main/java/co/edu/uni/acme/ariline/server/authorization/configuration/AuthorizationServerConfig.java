@@ -2,12 +2,12 @@ package co.edu.uni.acme.ariline.server.authorization.configuration;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.UUID;
 
+import co.edu.uni.acme.aerolinea.commons.entity.UserEntity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -54,7 +54,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 import co.edu.uni.acme.aerolinea.commons.entity.PassengerEntity;
-import co.edu.uni.acme.ariline.server.authorization.repository.PassengerRepository;
+import co.edu.uni.acme.ariline.server.authorization.repository.UserRepository;
 import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationFilterService;
 import co.edu.uni.acme.ariline.server.authorization.service.PasswordGrantAuthenticationProviderService;
 import lombok.RequiredArgsConstructor;
@@ -156,16 +156,16 @@ public class AuthorizationServerConfig {
      * {@link User} object. If the user is not found, a {@link UsernameNotFoundException} is thrown.
      * </p>
      *
-     * @param passengerRepository the repository used to retrieve passenger data
+     * @param userRepository the repository used to retrieve passenger data
      * @return a UserDetailsService implementation
      */
     @Bean
-    public UserDetailsService userDetailsService(PassengerRepository passengerRepository) {
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
         return email -> {
-            PassengerEntity passenger = passengerRepository.findByEmailPassenger(email)
+            UserEntity passenger = userRepository.findByEmailUser(email)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
             return User.builder()
-                    .username(passenger.getEmailPassenger())
+                    .username(passenger.getEmailUser())
                     .password("{bcrypt}" + passenger.getHashPassword())
                     .roles("USER")
                     .build();
