@@ -191,9 +191,9 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
-                .redirectUri("https://api-acmeairlines.duckdns.org/oauth/oauth2/code/oauth-client")
-                .redirectUri("https://api-acmeairlines.duckdns.org/oauth/v1/public/auth/authorized")
-                .postLogoutRedirectUri("https://api-acmeairlines.duckdns.org/oauth/logout")
+                .redirectUri("https://api-acmeairlines.ddns.net/oauth/oauth2/code/oauth-client")
+                .redirectUri("https://api-acmeairlines.ddns.net/oauth/v1/public/auth/authorized")
+                .postLogoutRedirectUri("https://api-acmeairlines.ddns.net/oauth/logout")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
@@ -266,7 +266,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("https://api-acmeairlines.duckdns.org/authorization")
+                .issuer("https://api-acmeairlines.ddns.net/authorization")
                 .build();
     }
 
