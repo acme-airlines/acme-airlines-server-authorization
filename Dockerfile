@@ -18,7 +18,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copia el archivo JAR generado al contenedor
-COPY --from=build /app/target/oauth-0.0.1-SNAPSHOT.jar oauth-ms.jar
+COPY --from=build /app/target/authorization-0.0.1-SNAPSHOT.jar authorization-ms.jar
 
 EXPOSE 9000
 
