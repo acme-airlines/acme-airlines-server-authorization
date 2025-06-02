@@ -2,6 +2,7 @@
 FROM maven:3.8.5-openjdk-17-slim AS build
 
 WORKDIR /app
+COPY settings.xml /root/.m2/settings.xml
 
 # Copiar pom.xml y descargar dependencias (caché)
 COPY pom.xml .
